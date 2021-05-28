@@ -1,5 +1,9 @@
 # Arrows - graph diagram library
 
+Fork of original [Arrows](https://github.com/apcj/arrows) repo that also supports RDF-TURTLE and SPARQL Query Output.
+
+Original Description:
+
 JavaScript library for drawing diagrams of small graphs, using [D3](http://d3js.org/) to generate SVG. 
 Useful for explaining [Neo4j](http://www.neo4j.org/) graph modelling concepts in presentations and blogs.
 
