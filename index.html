@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="style/graph-editor.css" type="text/css">
   <script type="text/javascript" src="graph-editor.js"></script>
   <script type="text/javascript" src="cypher.js"></script>
+  <script type="text/javascript" src="rdf.js"></script>
+  <script type="text/javascript" src="sparql.js"></script>
+
   <title>Arrow Tool</title>
 
   <script type="text/javascript">
@@ -34,7 +37,9 @@
 
 <div class="tools form-inline well">
   <button class="btn" id="add_node_button"><i class="icon-plus"></i> Node</button>
-  <button class="btn" id="exportToArrowsAppButton">Try Arrows.app <span class="label label-success">New!</span></button>
+  <!-- <button class="btn" id="exportToArrowsAppButton">Try Arrows.app <span class="label label-success">New!</span></button> -->
+  <button class="btn" id="exportRDFButton">Export RDF</button>
+  <button class="btn" id="exportSPARQLButton">Export SPARQL</button>
   <button class="btn" id="exportCypherButton">Export Cypher</button>
   <button class="btn" id="exportMarkupButton">Export Markup</button>
   <a class="btn" id="downloadSvgButton" download="arrows.svg">Download SVG</a>
@@ -146,6 +151,30 @@
   </div>
 </div>
 
+<div class="modal hide export-rdf">
+  <div class="modal-header">
+    <h3>Export as RDF (Turtle)</h3>
+  </div>
+  <div class="modal-body">
+    <textarea class="code">Some Text</textarea>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn cancel btn-primary">Close</a>
+    <a href="#" target="_blank" class="btn" id="open_console">Open in Console</a>
+  </div>
+</div>
+<div class="modal hide export-sparql">
+  <div class="modal-header">
+    <h3>Export to SPARQL query</h3>
+  </div>
+  <div class="modal-body">
+    <textarea class="code">Some Text</textarea>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn cancel btn-primary">Close</a>
+    <a href="#" target="_blank" class="btn" id="open_console">Open in Console</a>
+  </div>
+</div>
 <div id="canvas"></div>
 
 
