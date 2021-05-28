@@ -64,7 +64,7 @@ function sparql(model) {
 
                 if(typeCheck == "type"){
                     
-                    statements.push(":" + node.caption().replace(/ /g,"_")  + " rdfs:type " + ":" + prs[index].replace(/.*:/,"").replace(/\'/g,""))
+                    statements.push(":" + node.caption().replace(/ /g,"_")  + " rdf:type " + ":" + prs[index].replace(/.*:/,"").replace(/\'/g,""))
                 }
                 else{
 
