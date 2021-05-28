@@ -127,7 +127,7 @@ function rdf(model) {
         //console.log(render(props(rel)))
         statements.push(
             ":" + quote(rel.relationshipType()) +
-            " a rdf:Property;\n rdfs:label \"" + quote(rel.relationshipType()) + '"' 
+            " rdf:type rdf:Property;\n rdfs:label \"" + quote(rel.relationshipType()) + '"' 
             );
     });
     if (statements.length==0) return "";
