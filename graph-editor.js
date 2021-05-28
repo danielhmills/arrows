@@ -431,6 +431,27 @@ window.onload = function()
             .node().value = statement;
     };
 
+    var exportRDF = function ()
+    {
+        appendModalBackdrop();
+        d3.select( ".modal.export-rdf" ).classed( "hide", false );
+
+        var statement = gd.rdf(graphModel);
+        d3.select( ".export-rdf .modal-body textarea.code" )
+            .attr( "rows", statement.split( "\n" ).length )
+            .node().value = statement;
+    };
+
+    var exportSPARQL = function ()
+    {
+        appendModalBackdrop();
+        d3.select( ".modal.export-sparql" ).classed( "hide", false );
+
+        var statement = gd.sparql(graphModel);
+        d3.select( ".export-sparql .modal-body textarea.code" )
+            .attr( "rows", statement.split( "\n" ).length )
+            .node().value = statement;
+    };
 
     var chooseStyle = function()
     {
@@ -460,7 +481,9 @@ window.onload = function()
     d3.select("#internalScale" ).on("change", changeInternalScale);
     d3.select( "#exportToArrowsAppButton" ).on( "click", exportToArrowsApp );
     d3.select( "#exportMarkupButton" ).on( "click", exportMarkup );
-	  d3.select( "#exportCypherButton" ).on( "click", exportCypher );
+    d3.select( "#exportCypherButton" ).on( "click", exportCypher );
+    d3.select( "#exportRDFButton" ).on( "click", exportRDF );
+    d3.select( "#exportSPARQLButton" ).on( "click", exportSPARQL );
     d3.select( "#chooseStyleButton" ).on( "click", chooseStyle );
     d3.selectAll( ".modal-dialog" ).on( "click", function ()
     {
