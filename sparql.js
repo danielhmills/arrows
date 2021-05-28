@@ -134,7 +134,7 @@ function sparql(model) {
     let uniqueStatements = Array .from(new Set(statements))
     uniqueStatements.sort();
     //uniqueStatements.unshift("@prefix: <#>")
-    return "@prefix: <#>.\n@prefix ex: <http://example.com#>.\n@prefix rdf: <http://www.w3.org/2000/01/rdf-schema#>.\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n\n INSERT INTO GRAPH <urn:arrows-ttl>\n\n { " +  uniqueStatements.join(".\n\n") + "\n }";
+    return "@prefix : <#>.\n@prefix ex: <http://example.com#>.\n@prefix rdf: <http://www.w3.org/2000/01/rdf-schema#>.\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n\n INSERT INTO GRAPH <urn:arrows-ttl>\n\n { " +  uniqueStatements.join(".\n\n") + "\n }";
 };
 if (typeof exports != "undefined") exports.sparql=sparql
 gd.sparql=function(model) {return sparql(model || this.model());}
