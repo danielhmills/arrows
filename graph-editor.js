@@ -3,6 +3,7 @@ window.onload = function()
     var graphModel;
     if ( !localStorage.getItem( "graph-diagram-markup" ) )
     {
+        
         graphModel = gd.model();
         graphModel.createNode().x( 0 ).y( 0 );
         save( formatMarkup() );
@@ -12,7 +13,17 @@ window.onload = function()
         d3.select( "link.graph-style" )
             .attr( "href", localStorage.getItem( "graph-diagram-style" ) );
     }
-    graphModel = parseMarkup( localStorage.getItem( "graph-diagram-markup" ) );
+    url = new URL(location.href)
+    params = new URLSearchParams(url.search.slice(1))
+    if(params.has('d')){
+        ref = String(location)
+        deref = ref.replace(/.*\?d\=/,"")
+        graphModel = parseMarkup( window.atob(deref) );
+    }
+    else{
+        graphModel = parseMarkup( localStorage.getItem( "graph-diagram-markup" ) );
+
+    }
 
     var svg = d3.select("#canvas")
         .append("svg:svg")
@@ -370,6 +381,15 @@ window.onload = function()
         window.open(url)
     }
 
+    var shareDiagram = function ()
+    {
+        var diagram = window.localStorage.getItem("graph-diagram-markup")
+        window.localStorage.setItem("svgHash",btoa(diagram))
+        var dHash = window.localStorage.getItem("svgHash")
+        var url = window.location.href.replace(/#.*|#\?.*/,"") + "?d=" + dHash
+
+        window.open(url,'_self')
+    }
     var exportMarkup = function ()
     {
         appendModalBackdrop();
@@ -431,6 +451,17 @@ window.onload = function()
             .node().value = statement;
     };
 
+    var loadSVG = function ()
+    {
+        appendModalBackdrop();
+        d3.select( ".modal.load-svg" ).classed( "hide", false );
+
+        var svgData = btoa(document.getElementsByClassName("graphdiagram"))
+
+        var svgDec = atob(svgData) 
+       
+    };
+    
     var exportRDF = function ()
     {
         appendModalBackdrop();
@@ -442,7 +473,7 @@ window.onload = function()
             .node().value = statement;
     };
 
-    var exportSPARQL = function ()
+    var exportSPARQLInsert = function ()
     {
         appendModalBackdrop();
         d3.select( ".modal.export-sparql" ).classed( "hide", false );
@@ -451,6 +482,23 @@ window.onload = function()
         d3.select( ".export-sparql .modal-body textarea.code" )
             .attr( "rows", statement.split( "\n" ).length )
             .node().value = statement;
+    };
+
+    var exportSPARQLConstruct = function ()
+    {
+        appendModalBackdrop();
+        d3.select( ".modal.export-sparql-construct" ).classed( "hide", false );
+
+        var statement = gd.sparqlConstruct(graphModel);
+        d3.select( ".export-sparql-construct .modal-body textarea.code" )
+            .attr( "rows", statement.split( "\n" ).length )
+            .node().value = statement;
+    };
+
+    var clearCanvas = function ()
+    {   url = location.href.replace(/\?d.*/,"")
+        window.localStorage.removeItem('graph-diagram-markup')
+        window.open(url,'_self')
     };
 
     var chooseStyle = function()
@@ -480,11 +528,15 @@ window.onload = function()
     d3.select(window).on("resize", draw);
     d3.select("#internalScale" ).on("change", changeInternalScale);
     d3.select( "#exportToArrowsAppButton" ).on( "click", exportToArrowsApp );
+    d3.select( "#loadSVGButton" ).on( "click", loadSVG );
     d3.select( "#exportMarkupButton" ).on( "click", exportMarkup );
     d3.select( "#exportCypherButton" ).on( "click", exportCypher );
     d3.select( "#exportRDFButton" ).on( "click", exportRDF );
-    d3.select( "#exportSPARQLButton" ).on( "click", exportSPARQL );
+    d3.select( "#exportSPARQLInsertButton" ).on( "click", exportSPARQLInsert );
+    d3.select( "#exportSPARQLConstructButton" ).on( "click", exportSPARQLConstruct );
+    d3.select( "#shareDiagramButton" ).on( "click", shareDiagram );
     d3.select( "#chooseStyleButton" ).on( "click", chooseStyle );
+    d3.select("#clearButton").on("click", clearCanvas);
     d3.selectAll( ".modal-dialog" ).on( "click", function ()
     {
         d3.event.stopPropagation();
