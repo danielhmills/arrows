@@ -113,7 +113,7 @@ function rdf(model) {
     if (statements.length==0) return "";
     let uniqueStatements = Array .from(new Set(statements))
     uniqueStatements.sort();
-    return "@prefix: <#>.\n@prefix : <http://example.com#>.\n@prefix rdf: <http://www.w3.org/2000/01/rdf-schema#>.\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n\n" + uniqueStatements.join(".\n") + ".";
+    return "@prefix : <#>.\n@prefix : <http://example.com#>.\n@prefix rdf: <http://www.w3.org/2000/01/rdf-schema#>.\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n\n" + uniqueStatements.join(".\n") + ".";
 };
 if (typeof exports != "undefined") exports.rdf=rdf
 gd.rdf=function(model) {return rdf(model || this.model());}
