@@ -30,13 +30,10 @@ function sparql(model) {
 
     var statements = [];
     model.nodeList().forEach(function (node,index) {
-        //Create Triples
         p = render(props(node)).split(",")
         let pr = render(props(node))
-        //console.log(p)
 
         statements.push(":" + node.caption().replace(/ /g,"_")  + " rdfs:label " + '"' + node.caption() + '"')
-        //console.log(node.caption())
 
     });
 
@@ -44,19 +41,9 @@ function sparql(model) {
         let s = []
         let pr = render(props(node))
         let prs = pr.split(",")
-        //console.log(prs)
         let l = pr.length
 
         prs.forEach((x,index) =>{
-            //if(x.replace(/:.*/,"") == "domain")
-            //    //s.push(render(pr).replace(/\'/g,'"').replace(/\:/," ").toString().split(','))
-            //    statements.push(":" + node.caption()  + " rdfs:domain " + ":" + pr.replace(/.*:/,"").replace(/\'/g,""))
-            //if(x.replace(/:.*/,"") == "range")
-            //    //s.push(render(pr).replace(/\'/g,'"').replace(/\:/," ").toString().split(','))
-            //    statements.push(":" + node.caption()  + " rdfs:range " + ":" + pr.replace(/.*:/,"").replace(/\'/g,""))
-            //if(x.replace(/:.*/,"") == "type" || x.replace(/:.*/,"") == "a")
-            //    //s.push(render(pr).replace(/\'/g,'"').replace(/\:/," ").toString().split(','))
-            //    statements.push(":" + node.caption()  + " a " + ":" + pr.replace(/.*:/,"").replace(/\'/g,""))  
             if(x && x.length > 1){
                 console.log(prs[index].replace(/:.*/,"").replace(/\'/g,""))
                 typeCheck = prs[index].replace(/:.*/,"").replace(/\'/g,"")
@@ -118,23 +105,23 @@ function sparql(model) {
             
         
         })
-        //console.log(statements)
     });
     model.relationshipList().forEach(function (rel) {
         //Create Triples about Properties
         pa = []
         p = render(props(rel))
-        //console.log(render(props(rel)))
         statements.push(
             ":" + quote(rel.relationshipType()) +
-            " rdf:type rdf:Property;\n rdfs:label \"" + quote(rel.relationshipType()) + '"' 
+            " rdf:type rdf:Property.\n" +
+            "\n:" + quote(rel.relationshipType()) + 
+            " rdfs:label \"" + quote(rel.relationshipType()) + '"' 
             );
     });
     if (statements.length==0) return "";
     let uniqueStatements = Array .from(new Set(statements))
     uniqueStatements.sort();
-    //uniqueStatements.unshift("@prefix: <#>")
-    return "@prefix: <#>.\n@prefix ex: <http://example.com#>.\n@prefix rdf: <http://www.w3.org/2000/01/rdf-schema#>.\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n\n INSERT INTO GRAPH <urn:arrows-ttl>\n\n { " +  uniqueStatements.join(".\n\n") + "\n }";
+    //uniqueStatements.unshift("PREFIX: <#>")
+    return "PREFIX : <#>\nPREFIX ex: <http://example.com#>\nPREFIX rdf: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n\n INSERT INTO GRAPH <urn:arrows-ttl>\n\n { " +  uniqueStatements.join(".\n\n") + "\n }";
 };
 if (typeof exports != "undefined") exports.sparql=sparql
 gd.sparql=function(model) {return sparql(model || this.model());}
