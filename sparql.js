@@ -77,33 +77,12 @@ function sparql(model) {
             " :" + rel.end.caption().replace(/ /g,"_")
         );
         p.forEach(x =>{
-            if(x.includes("domain"))
-            statements.push(
-            ":" + quote(rel.relationshipType()).replace(/ /g,"_") + 
-            " " + "rdfs:domain "
-            + ":" +x.replace(/\'/g,"").replace(/.*:/g,"")
-            )
-            if(x.includes("range"))
-                statements.push(
-                ":" + quote(rel.relationshipType()).replace(/ /g,"_") + 
-                " " + "rdfs:range "
-                + ":" + x.replace(/\'/g,"").replace(/.*:/g,"")
-            )
             
-            if(!x.includes("domain") && !x.includes("range") && !(x.replace(/.*:/,"").charAt(0) == '"') && (x.length > 0) )
-                statements.push(
-                    ":" + quote(rel.relationshipType()).replace(/ /g,"_") + 
-                    " :" + x.replace(/:.*/g,"")
-                    +" :" + x.replace(/\'/g,"").replace(/.*:/g,"")
-                )
-            if((!x.includes("domain") && !x.includes("range")) && (x.replace(/.*:/,"").charAt(0) == '"') && (x.length > 0))
             statements.push(
                 ":" + quote(rel.relationshipType()).replace(/ /g,"_") + 
                 " :" + x.replace(/:.*/g,"")+
-                " "  + x.replace(/.*\:/g,"").replace(/\'/g,"")
-            )
-            
-        
+                " \""  + x.replace(/.*\:/g,"").replace(/\'/g,"") + "\""
+            )        
         })
     });
     model.relationshipList().forEach(function (rel) {
